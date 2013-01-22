@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import rechtschreib.hopfield.Convert;
+
 import hopfield.process.*;
 
 /* Diese Klasse dient ledigiglich zur Ein-und ausgabe von Daten für das Hopfield-Netzwerk */
@@ -75,6 +77,9 @@ public class Startup2 {
 			
 			String ausgabe = "";
 			
+			// Erstelle lesbare Ausgabe / Wandle Vektoren in Buchstaben um:
+			String textAusgabe = Convert.ausgabe2Text(netj);
+			
 			for (int k = 0; k < 4; k++){
 				for (int i = 0; i<m; i++){
 					int y = netj[i][k];
@@ -82,7 +87,7 @@ public class Startup2 {
 				}
 				ausgabe +=  "\n";
 			}
-			System.out.println(ausgabe);
+			System.out.println("Ergebnis: " + textAusgabe);
 
 		//}
 //		else {

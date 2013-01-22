@@ -43,6 +43,31 @@ public class Convert {
     	
     	return wert;
     }
+    
+private static String netjVektor2Buchstabe(String vektor){
+		
+		HashMap<String, String> h = new HashMap<String, String>();
+		h.put("1-1-1-1", "a");
+		h.put("-11-1-1", "b");
+		h.put("-1-11-1", "c");
+		h.put("-1-1-11", "d");
+		
+		return h.get(vektor);
+	}
+
+	public static String ausgabe2Text(int[][] netj) {
+		String temp ="";
+		String result = "";
+		for(int i =0; i< netj.length; i++){
+			for(int j = 0; j<netj[0].length;j++){
+				temp+=netj[i][j];				
+			}
+			System.out.println("current temp is: " + temp);
+			result+= netjVektor2Buchstabe(temp);
+			temp="";
+		}
+		return result;
+	}
 
     public static int[][] wort_split(String wort, int m){
     	
