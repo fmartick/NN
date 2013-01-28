@@ -17,86 +17,70 @@ public class Startup2 {
 	public static void main(String args[]) {
 		
 		System.out.println("Diesem Programm ist ein Rechtschreibprogramm welches zur Worterkennng ein Hopfield-netzwerk verwendet");
-		
 		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
 		String eingabe = null;
 		int m = 0;
 		
+		//Anzahl der Buchstaben, welche verwendet werden koennen.
+		int buch_anz = 7;
 		
+		
+		//Einlesen eines Wortes welches als zu erkennendes Wort dienen soll. 
 		System.out.print("Geben Sie bitte ein richtiges Wort ein:");
-		//Einlesen wie groß die Matrix sein soll
+		
+		//Einlesen wie groß die Matrix sein soll. Die Groesse der Matrix richtet sich dabei nach der Länge des eingegebenen Wortes
 		try {
 				eingabe = console.readLine();
 				m = eingabe.length();
-				
-				
 		} catch (IOException e) {
-			// Sollte eigentlich nie passieren
 			e.printStackTrace();
 		}
 		
-		int[][] wortVek = new int [m][4];
-		int[][] falschVek = new int [m][4];
+		//Initialisiere die Matrizen welche die Wörter beinhalten. 
+		int[][] wortVek = new int [m][buch_anz]; 		//zu erkennendes Wort
+		int[][] falschVek = new int [m][buch_anz];  	//eingegebenes falsches Wort
+		
+		//Das Muster-Wort wird mittels der folgenden Funktion in eine Matrix konvertiert. Diese besitzt "m"-Spalten (Wortlänge) und 26 Zeilen (Länge des Alphabets)  
 		wortVek = Convert.wort_split(eingabe, m);
 		
-		//Variante der Eingabe der Matrix
-		System.out.print("Gewichtsmatrix mittels Vektor(1) oder manuell(2) eingeben:");
-		int auswahl = 1;
-		try {
-			eingabe = console.readLine();
-			auswahl = new Integer(eingabe);
-		} catch (IOException e) {
-			// Sollte eigentlich nie passieren
-			e.printStackTrace();
-		}
-		int[][][] W = new int [m][m][4];
+		//Initialisiere die Gewichtsmatrix.
+		int[][][] W = new int [m][m][buch_anz];
 		
-		W=Functions2.VektorToMatrix(m, wortVek);
+		//Anhand des Muster-Wortes wird die Gewichtsmatrix berechnet
+		W=Functions2.VektorToMatrix(m, wortVek, buch_anz);
 		
-		
+		//Liest das "falsche" Wort ein. Dieses Wort wird versucht auf das "Muster-Wort" zurueckzufuehren
 		System.out.print("Welches Wort soll mit richtigem Wort verglichen werden:");
-		auswahl = 1;
 		try {
 			eingabe = console.readLine();
 			m = eingabe.length();
-			falschVek = Convert.wort_split(eingabe, m);
+			falschVek = Convert.wort_split(eingabe, m, buch_anz);
 	
 		} catch (IOException e) {
-			// Sollte eigentlich nie passieren
 			e.printStackTrace();
 		}
-		//if (auswahl == 2 ){
-			//Functions.alleVektoren(W, m);
-		//}
-		//else if (auswahl == 1){
+		
+		//Initialisiere eine neue Matrix. Diese beinhaltet das zurueckgefuehrte Wort
+		int[][] netj = new int [m][4];
+		int t= 1;  //Wie oft soll Vektor mit Matrix multipliziert werden. Variable kann variiert werden ,wodurch mehrere Male der Prozess der Zurueckfuehrung duchgefuehrt wird. 
+		
+		//Versuche das Wort zurueckzufuehren
+		netj = Functions2.propagierungsfunktion(falschVek, W, t, m, buch_anz);
+		
+		String ausgabe = "";
+		
+		// Erstelle lesbare Ausgabe / Wandle Vektoren in Buchstaben um:
+		String textAusgabe = Convert.ausgabe2Text(netj);
 			
-			int[][] netj = new int [m][4];
-			int t= 1;  //Wie oft soll Vektor mit Matrix multipliziert werden
-			
-			netj = Functions2.propagierungsfunktion(falschVek, W, t, m);
-			
-			String ausgabe = "";
-			
-			// Erstelle lesbare Ausgabe / Wandle Vektoren in Buchstaben um:
-			String textAusgabe = Convert.ausgabe2Text(netj);
-			
-			for (int k = 0; k < 4; k++){
-				for (int i = 0; i<m; i++){
-					int y = netj[i][k];
-					ausgabe +=  y + "\t";
-				}
-				ausgabe +=  "\n";
+		for (int k = 0; k < 4; k++){
+			for (int i = 0; i<m; i++){
+				int y = netj[i][k];
+				ausgabe +=  y + "\t";
 			}
-			System.out.println("Ergebnis: " + textAusgabe);
+			ausgabe +=  "\n";
+		}
+		System.out.println("Ergebnis: " + textAusgabe);
 
-		//}
-//		else {
-//			return;
-//		}
-		
-		
-				
-		
 	}
 
 }

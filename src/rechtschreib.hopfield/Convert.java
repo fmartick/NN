@@ -7,8 +7,9 @@ public class Convert {
 
     public static int b_to_binaer(String Buchstabe) {
         
+    	//Hashmap, welche zu jedem Buchstaben die Position des Buchstabens im lphabet beinhaltet 
     	int wert = -1;
-    	Buchstabe = Buchstabe.toLowerCase();
+    	Buchstabe = Buchstabe.toLowerCase(); 
     	HashMap<String,Number> h = new HashMap<String,Number>();
     	h.put("a", 1);
     	h.put("b", 2);
@@ -46,16 +47,21 @@ public class Convert {
     
 private static String netjVektor2Buchstabe(String vektor){
 		
+		//Hashmap gibt zu den Vektoren den richtigen Buchstaben aus
 		HashMap<String, String> h = new HashMap<String, String>();
-		h.put("1-1-1-1", "a");
-		h.put("-11-1-1", "b");
-		h.put("-1-11-1", "c");
-		h.put("-1-1-11", "d");
+		h.put("1-1-1-1-1-1-1", "a");
+		h.put("-11-1-1-1-1-1", "b");
+		h.put("-1-11-1-1-1-1", "c");
+		h.put("-1-1-11-1-1-1", "d");
+		h.put("-1-1-1-11-1-1", "e");
+		h.put("-1-1-1-1-11-1", "f");
+		h.put("-1-1-1-1-1-11", "g");
 		
 		return h.get(vektor);
 	}
 
 	public static String ausgabe2Text(int[][] netj) {
+		//Wandelt eine Matrix in mehrere lesbare Vektoren um und führt diese auf eine nBuchstaben zurueck
 		String temp ="";
 		String result = "";
 		for(int i =0; i< netj.length; i++){
@@ -69,27 +75,30 @@ private static String netjVektor2Buchstabe(String vektor){
 		return result;
 	}
 
-    public static int[][] wort_split(String wort, int m){
+    public static int[][] wort_split(String wort, int m, int bla){
+    	//Wandelt das uebergebene Wort in eine Matrix um. Dabei steht pro Zeile ein Buchstabe des Wortes. 
+    	//Die Zeilen geben dabei an, welcher Buchstabe an der Stelle steht (an der zigten Position des Buchstabes im Alphabet steht eine "1" sonst "0" 
+    	
     	
     	int wortlaenge = wort.length(); 
 		int max_array_length = m;
-		int wort_array[][] = new int[max_array_length][4];
+		int wort_array[][] = new int[max_array_length][bla];
 		 
 		for(int k=0; k<max_array_length; k++){
-			 for(int l=0; l<4; l++){  
+			 for(int l=0; l<4; l++){
+				 //Fuelle zunaechst das Array mit dem Wert "-1"
 			 	wort_array[k][l] = -1;
 		 	}
 		}    	  
 	 	String array ="";
 	 	int i = 0;
 	 	int wert;
-	 	//System.out.println(wort + " besteht aus folgenden Buchstaben:");
 	 	while(i< wortlaenge){
 	  
-			String buchstabe = wort.substring(i, i+1);	  
-		  	wert = b_to_binaer(buchstabe);
-		  	//System.out.println("- " +buchstabe + " Es ist der " + wert + ". Buchstabe im Alphabet.");
-		 		  
+			String buchstabe = wort.substring(i, i+1);
+			//setze den Wert "1" an der Stelle des Arrays, wo der Buchstabe im Alphabet steht.
+			//position des Buchstabens is in einer hash-Map in der Funktion b_to_binaer gespeichert.
+		  	wert = b_to_binaer(buchstabe);		 		  
 		  	wort_array[i][wert-1] = 1;
 		  
 		  	i++;

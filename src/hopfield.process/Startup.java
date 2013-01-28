@@ -9,6 +9,8 @@ import hopfield.process.*;
 
 /* Diese Klasse dient ledigiglich zur Ein-und ausgabe von Daten für das Hopfield-Netzwerk */
 
+/* Diese Klasse dient ledigiglich zur Ein-und ausgabe von Daten für das Hopfield-Netzwerk */
+
 public class Startup {
 	
 	public static void main(String args[]) {
@@ -50,38 +52,85 @@ public class Startup {
 			return;
 		}
 		
-		String ausgabe = "";
+		String ausgabe = "[";
 		for (int i = 0; i<m; i++){
 			for (int j = 0; j<m; j++){
 				 int x = W[i][j];
 			
-				ausgabe += " " + x;
+				ausgabe += x;
+				if(j<m-1)
+					ausgabe += "\t";
 			}
-			ausgabe += "\n";
+			if(i<m-1)
+				ausgabe += "\n";
+		}
+		ausgabe += "]";
+		System.out.println("Folgende Gewichtsmatrix wurde hinterlegt:\n" + ausgabe);
+		
+		
+		System.out.print("Vektor überprüfen(1) oder alle Vektoren und deren Outputvektoren berechnen(2):");
+		auswahl = 1;
+		try {
+			eingabe = console.readLine();
+			auswahl = new Integer(eingabe);
+		} catch (IOException e) {
+			// Sollte eigentlich nie passieren
+			e.printStackTrace();
+		}
+		if (auswahl == 2 ){
+			Functions.alleVektoren(W, m);
+		}
+		else if (auswahl == 1){
+			int[] in_vek = new int [m];
+			int[] en_vek = new int [m];
+			double E;
+			in_vek = InputConsole.InputVektor(m);
+			ausgabe = "[";
+			for (int i = 0; i<m; i++){
+					 int x = in_vek[i];
+					ausgabe +=  x;
+					if(i<m-1)
+						ausgabe += ", ";
+			}
+			ausgabe += "]";
+			System.out.println("Eingabevektor lautet: " +ausgabe);
+			
+			
+			
+			int[] netj = new int [m];
+			int t= 1;  //Wie oft soll Vektor mit Matrix multipliziert werden
+			netj = Functions.propagierungsfunktion(in_vek, W, t, m);
+			
+			ausgabe = "";
+			for (int i = 0; i<m; i++){
+				int y = netj[i];
+				ausgabe +=  y + "\n";
+			}
+			System.out.println(ausgabe);
+			
+			E  = Functions.energiefunktion(in_vek, m, netj, W);
+			
+			en_vek = Functions.delta_energie(netj, in_vek, m, W);
+						
+			System.out.println("Die Energie beläuft sich auf: " + E);
+			
+			ausgabe = "";
+			for (int i = 0; i<m; i++){
+				int y = en_vek[i];
+				ausgabe +=  y + "\n";
+			}
+			System.out.println(ausgabe);			
+			
+			System.out.println("Berechnung der delta_energie: \n" + ausgabe);			
+			
+			
+		}
+		else {
+			return;
 		}
 		
-		int[] in_vek = new int [m];
-		in_vek = InputConsole.InputVektor(m);
 		
-		System.out.println(ausgabe);
-				ausgabe = "";
-		for (int i = 0; i<m; i++){
-				 int x = in_vek[i];
-				ausgabe += " " + x;
-		}
-		System.out.println(ausgabe);
-		
-		int[] netj = new int [m];
-		int t= 1;  //Wie oft soll Vektor mit Matrix multipliziert werden
-		netj = Functions.propagierungsfunktion(in_vek, W, t, m);
-		
-		ausgabe = "";
-		for (int i = 0; i<m; i++){
-			int y = netj[i];
-			ausgabe +=  y + "\n";
-		}
-		System.out.println(ausgabe);
-		
+				
 		
 	}
 

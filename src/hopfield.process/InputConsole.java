@@ -85,51 +85,5 @@ public class InputConsole {
 
 }
 
-	public static int[][] VektorToMatrix( int m){
-				
-		BufferedReader console = new BufferedReader(new InputStreamReader(System.in));
-		String eingabe;
-		System.out.println("Geben Sie den Vektor ein:");
-		
-		int[][] W = new int [m][m];
-		int[] vek = new int [m];
-		try {
-			eingabe = console.readLine();
-			
-			int last_pos_old = 0;
-			int r = 0;
-			
-			Matcher matcher = Pattern.compile( "\\d" ).matcher( eingabe );
-			while ( matcher.find() ){
-					int last_pos = matcher.end();
-					if (last_pos - last_pos_old > 1 ) {
-						vek[r] = new Integer(eingabe.substring(last_pos_old, last_pos_old +2));
-						r++;	
-					}
-					else{
-						vek[r] = new Integer(eingabe.substring(last_pos_old, last_pos_old +1));
-						r++;
-					}
-					last_pos_old = last_pos;
-			}
-			
-			for (int i = 0; i < m; i++ ){
-				for (int j = 0; j < m; j++ ){
-					W[i][j] = vek[i] * vek[j];
-					if( i == j){
-						W[i][j] = 0;
-					}
-				}
-			}
-			
-			
-		} catch (IOException e) {
-			// Sollte eigentlich nie passieren
-			e.printStackTrace();
-		}
-		
-		
-		return W;
-		
-	}
+
 }
